@@ -44,6 +44,7 @@
 #endif  // XE_PLATFORM_WIN32
 
 // Available graphics systems:
+#include "xenia/gpu/gl4/gl4_graphics_system.h"
 #include "xenia/gpu/null/null_graphics_system.h"
 #include "xenia/gpu/vulkan/vulkan_graphics_system.h"
 #if XE_PLATFORM_WIN32
@@ -63,7 +64,7 @@
 #include "third_party/fmt/include/fmt/format.h"
 
 DEFINE_string(apu, "any", "Audio system. Use: [any, nop, sdl, xaudio2]", "APU");
-DEFINE_string(gpu, "any", "Graphics system. Use: [any, d3d12, vulkan, null]",
+DEFINE_string(gpu, "any", "Graphics system. Use: [any, d3d12, gl4, vulkan, null]",
               "GPU");
 DEFINE_string(hid, "any", "Input system. Use: [any, nop, sdl, winkey, xinput]",
               "HID");
@@ -345,6 +346,7 @@ std::unique_ptr<gpu::GraphicsSystem> EmulatorApp::CreateGraphicsSystem() {
   factory.Add<gpu::d3d12::D3D12GraphicsSystem>("d3d12");
 #endif  // XE_PLATFORM_WIN32
   factory.Add<gpu::vulkan::VulkanGraphicsSystem>("vulkan");
+  factory.Add<gpu::gl4::GL4GraphicsSystem>("gl4");
   std::unique_ptr<gpu::GraphicsSystem> gpu_implementation =
       factory.Create(gpu_implementation_name);
   if (!gpu_implementation) {
